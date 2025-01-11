@@ -1,0 +1,408 @@
+package com.wellsfargo.counsler.entity;
+
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+public class FinancialAdvisor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long advisorId;
+
+    @Column(nullable = false)
+    private String firstName;
+
+    @Column(nullable = false)
+    private String lastName;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    private String phoneNumber;
+
+    private String businessHours;
+
+    @OneToMany(mappedBy = "advisor")
+    private List<Client> clients;
+
+    // Constructor
+    public FinancialAdvisor(String firstName, String lastName, String email, String phoneNumber, String businessHours) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.businessHours = businessHours;
+    }
+
+    // Getters and Setters
+    public Long getAdvisorId() {
+        return advisorId;
+    }
+
+    public void setAdvisorId(Long advisorId) {
+        this.advisorId = advisorId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getBusinessHours() {
+        return businessHours;
+    }
+
+    public void setBusinessHours(String businessHours) {
+        this.businessHours = businessHours;
+    }
+
+    public List<Client> getClients() {
+        return clients;
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
+}
+
+
+
+package com.wellsfargo.counsler.entity
+
+import javax.persistence.*;
+        import java.util.List;
+
+@Entity
+public class Client {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long clientId;
+
+    @Column(nullable = false)
+    private String firstName;
+
+    @Column(nullable = false)
+    private String lastName;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    private String phoneNumber;
+
+    private String address;
+
+    private String dateOfBirth;
+
+    @ManyToOne
+    @JoinColumn(name = "advisor_id", nullable = false)
+    private FinancialAdvisor advisor;
+
+    @OneToMany(mappedBy = "client")
+    private List<Portfolio> portfolios;
+
+    // Constructor
+    public Client(String firstName, String lastName, String email, String phoneNumber, String address, String dateOfBirth, FinancialAdvisor advisor) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.dateOfBirth = dateOfBirth;
+        this.advisor = advisor;
+    }
+
+    // Getters and Setters
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public FinancialAdvisor getAdvisor() {
+        return advisor;
+    }
+
+    public void setAdvisor(FinancialAdvisor advisor) {
+        this.advisor = advisor;
+    }
+
+    public List<Portfolio> getPortfolios() {
+        return portfolios;
+    }
+
+    public void setPortfolios(List<Portfolio> portfolios) {
+        this.portfolios = portfolios;
+    }
+}
+
+
+
+package com.wellsfargo.counsler.entity;
+
+import javax.persistence.*;
+        import java.util.List;
+
+@Entity
+public class Portfolio {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long portfolioId;
+
+    @Column(nullable = false)
+    private String portfolioName;
+
+    private String creationDate;
+
+    private Double totalValue;
+
+    @ManyToOne
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
+
+    @OneToMany(mappedBy = "portfolio")
+    private List<Security> securities;
+
+    // Constructor
+    public Portfolio(String portfolioName, String creationDate, Double totalValue, Client client) {
+        this.portfolioName = portfolioName;
+        this.creationDate = creationDate;
+        this.totalValue = totalValue;
+        this.client = client;
+    }
+
+    // Getters and Setters
+    public Long getPortfolioId() {
+        return portfolioId;
+    }
+
+    public void setPortfolioId(Long portfolioId) {
+        this.portfolioId = portfolioId;
+    }
+
+    public String getPortfolioName() {
+        return portfolioName;
+    }
+
+    public void setPortfolioName(String portfolioName) {
+        this.portfolioName = portfolioName;
+    }
+
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Double getTotalValue() {
+        return totalValue;
+    }
+
+    public void setTotalValue(Double totalValue) {
+        this.totalValue = totalValue;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public List<Security> getSecurities() {
+        return securities;
+    }
+
+    public void setSecurities(List<Security> securities) {
+        this.securities = securities;
+    }
+}
+
+
+
+package com.wellsfargo.counsler.entity;
+
+import javax.persistence.*;
+
+@Entity
+public class Security {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long securityId;
+
+    @Column(nullable = false)
+    private String name;
+
+    private String category;
+
+    private String purchaseDate;
+
+    private Double purchasePrice;
+
+    private Integer quantity;
+
+    private Double currentValue;
+
+    @ManyToOne
+    @JoinColumn(name = "portfolio_id", nullable = false)
+    private Portfolio portfolio;
+
+// Constructor
+public Security(String name, String category, String purchaseDate, Double purchasePrice, Integer quantity, Double currentValue, Portfolio portfolio) {
+    this.name = name;
+    this.category = category;
+    this.purchaseDate = purchaseDate;
+    this.purchasePrice = purchasePrice;
+    this.quantity = quantity;
+    this.currentValue = currentValue;
+    this.portfolio = portfolio;
+}
+
+    // Getters and Setters
+    public Long getSecurityId() {
+        return securityId;
+    }
+
+    public void setSecurityId(Long securityId) {
+        this.securityId = securityId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(String purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
+
+    public Double getPurchasePrice() {
+        return purchasePrice;
+    }
+
+    public void setPurchasePrice(Double purchasePrice) {
+        this.purchasePrice = purchasePrice;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Double getCurrentValue() {
+        return currentValue;
+    }
+
+    public void setCurrentValue(Double currentValue) {
+        this.currentValue = currentValue;
+    }
+
+    public Portfolio getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
+    }
+
